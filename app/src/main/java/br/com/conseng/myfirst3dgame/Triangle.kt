@@ -13,12 +13,12 @@ class Triangle {
     /**
      * Buffer for vertex-array.
      */
-    private lateinit var vb: FloatBuffer
+    private var vb: FloatBuffer
 
     /**
      * Buffer for index-array.
      */
-    private lateinit var ib: ByteBuffer
+    private var ib: ByteBuffer
 
     /**
      * Vertices of our triangle.
@@ -32,7 +32,7 @@ class Triangle {
     /**
      * Buffer for color-array.
      */
-    private lateinit var cb: FloatBuffer
+    private var cb: FloatBuffer
 
     /**
      * Colors for the vertices.

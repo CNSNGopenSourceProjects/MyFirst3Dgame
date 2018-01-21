@@ -20,6 +20,16 @@ class MyGLRenderer(private val context: Context) : GLSurfaceView.Renderer {
     private val triangle = Triangle()
 
     /**
+     * Define the rotation angle to be used on triangle rotation rendering.
+     */
+    private var angleTriangle = 0.0f
+
+    /**
+     * Define the rotation speed to be used on triangle rotation rendering.
+     */
+    private val speedTriangle = 0.5f
+
+    /**
      * Called when the rendering thread starts and whenever the EGL context is lost.
      * The EGL context will typically be lost when the Android device awakes after going to sleep.
      * @param [gles] GL10: the GL interface. Use instanceof to test if the interface supports GL11 or higher interfaces.
@@ -32,13 +42,12 @@ class MyGLRenderer(private val context: Context) : GLSurfaceView.Renderer {
      * */
     override fun onSurfaceCreated(gles: GL10?, config: EGLConfig?) {
         gles!!.glClearColor(0.0f, 0.0f, 0.0f, 1.0f)     // Set color's clear-value to black
-        gles!!.glClearDepthf(1.0f)                                       // Set depth's clear-value to farthest
-        gles!!.glEnable(GL10.GL_DEPTH_TEST)                                     // Enables depth-buffer for hidden surface removal
-        gles!!.glDepthFunc(GL10.GL_LEQUAL)                                      // The type of depth testing to do
-        gles!!.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_NICEST)      // Nice perspective view
-        gles!!.glShadeModel(GL10.GL_SMOOTH)                                     // Enable smooth shading of color
-        gles!!.glDisable(GL10.GL_DITHER)                                        // Disable dithering for better performance
-        // TODO: My OpenGL|ES initialization code here
+        gles.glClearDepthf(1.0f)                                         // Set depth's clear-value to farthest
+        gles.glEnable(GL10.GL_DEPTH_TEST)                                       // Enables depth-buffer for hidden surface removal
+        gles.glDepthFunc(GL10.GL_LEQUAL)                                        // The type of depth testing to do
+        gles.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_NICEST)        // Nice perspective view
+        gles.glShadeModel(GL10.GL_SMOOTH)                                       // Enable smooth shading of color
+        gles.glDisable(GL10.GL_DITHER)                                          // Disable dithering for better performance
     }
 
     /**
@@ -53,12 +62,11 @@ class MyGLRenderer(private val context: Context) : GLSurfaceView.Renderer {
         val aspect: Float = width.toFloat() / h.toFloat()           // Set the viewport (display area) to cover the entire window
 
         gles!!.glViewport(0, 0, width, h)                     // Setup perspective projection, with aspect ratio matches viewport
-        gles!!.glMatrixMode(GL10.GL_PROJECTION);                    // Select projection matrix
-        gles!!.glLoadIdentity();                                    // Reset projection matrix
-        GLU.gluPerspective(gles!!, 45.0f, aspect, 0.1f, 100.0f);    // Use perspective projection
-        gles!!.glMatrixMode(GL10.GL_MODELVIEW);                     // Select model-view matrix
-        gles!!.glLoadIdentity();                                    // Reset
-        // TODO: My OpenGL|ES display re-sizing code here
+        gles.glMatrixMode(GL10.GL_PROJECTION)                       // Select projection matrix
+        gles.glLoadIdentity()                                       // Reset projection matrix
+        GLU.gluPerspective(gles, 45.0f, aspect, 0.1f, 100.0f)       // Use perspective projection
+        gles.glMatrixMode(GL10.GL_MODELVIEW)                        // Select model-view matrix
+        gles.glLoadIdentity()                                       // Reset
     }
 
     /**
@@ -70,8 +78,10 @@ class MyGLRenderer(private val context: Context) : GLSurfaceView.Renderer {
         // Clear color and depth buffers using clear-values set earlier.
         gles!!.glClear(GL10.GL_COLOR_BUFFER_BIT or GL10.GL_DEPTH_BUFFER_BIT)
         // Draw the triangle.
-        gles!!.glLoadIdentity()
-        gles!!.glTranslatef(-1.5f, 0.0f, -6.0f)
-        triangle.draw(gles!!)
+        gles.glLoadIdentity()
+        gles.glTranslatef(-1.5f, 0.0f, -6.0f)
+        gles.glRotatef(angleTriangle, -1.5f, 0.0f, -6.0f)
+        triangle.draw(gles)
+        angleTriangle += speedTriangle          // Increment the rotation angle
     }
 }
