@@ -15,6 +15,11 @@ import javax.microedition.khronos.opengles.GL10
 class MyGLRenderer(private val context: Context) : GLSurfaceView.Renderer {
 
     /**
+     * Create the triangle to be displayed.
+     */
+    private val triangle = Triangle()
+
+    /**
      * Called when the rendering thread starts and whenever the EGL context is lost.
      * The EGL context will typically be lost when the Android device awakes after going to sleep.
      * @param [gles] GL10: the GL interface. Use instanceof to test if the interface supports GL11 or higher interfaces.
@@ -64,6 +69,9 @@ class MyGLRenderer(private val context: Context) : GLSurfaceView.Renderer {
     override fun onDrawFrame(gles: GL10?) {
         // Clear color and depth buffers using clear-values set earlier.
         gles!!.glClear(GL10.GL_COLOR_BUFFER_BIT or GL10.GL_DEPTH_BUFFER_BIT)
-        // TODO: My OpenGL|ES display draw code here
+        // Draw the triangle.
+        gles!!.glLoadIdentity()
+        gles!!.glTranslatef(-1.5f, 0.0f, -6.0f)
+        triangle.draw(gles!!)
     }
 }
