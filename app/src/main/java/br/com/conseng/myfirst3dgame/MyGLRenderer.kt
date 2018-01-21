@@ -30,6 +30,21 @@ class MyGLRenderer(private val context: Context) : GLSurfaceView.Renderer {
     private val speedTriangle = 0.5f
 
     /**
+     * Create the pyramid to be displayed.
+     */
+    private val pyramid = Pyramid()
+
+    /**
+     * Define the rotation angle to be used on pyramid rotation rendering.
+     */
+    private var anglePyramid = 0.0f
+
+    /**
+     * Define the rotation speed to be used on pyramid rotation rendering.
+     */
+    private val speedPyramid = 2.0f
+
+    /**
      * Called when the rendering thread starts and whenever the EGL context is lost.
      * The EGL context will typically be lost when the Android device awakes after going to sleep.
      * @param [gles] GL10: the GL interface. Use instanceof to test if the interface supports GL11 or higher interfaces.
@@ -80,8 +95,14 @@ class MyGLRenderer(private val context: Context) : GLSurfaceView.Renderer {
         // Draw the triangle.
         gles.glLoadIdentity()
         gles.glTranslatef(-1.5f, 0.0f, -6.0f)
-        gles.glRotatef(angleTriangle, -1.5f, 0.0f, -6.0f)
+        gles.glRotatef(angleTriangle, -0.1f, 1.0f, -0.1f)
         triangle.draw(gles)
         angleTriangle += speedTriangle          // Increment the rotation angle
+        // Draw the pyramid.
+        gles.glLoadIdentity()
+        gles.glTranslatef(1.5f, 0.0f, -6.0f)
+        gles.glRotatef(anglePyramid, 0.1f, 1.0f, -0.1f)
+        pyramid.draw(gles)
+        anglePyramid += speedPyramid            // Increment the rotation angle
     }
 }
